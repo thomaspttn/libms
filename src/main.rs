@@ -1,5 +1,6 @@
 use anyhow::Result;
-use libms::{parse_mzml, Run};
+use libms::models::Run;
+use libms::parse_mzml;
 
 fn main() -> Result<()> {
     // Example: Load mzML data from a string (you can replace this with file reading)
@@ -12,7 +13,7 @@ fn main() -> Result<()> {
     println!("Start Time: {}", run.start_time);
     println!("\nFound {} spectra", run.spectra.len());
 
-    for (i, spectrum) in run.spectra.iter().take(2).enumerate() {
+    for (i, spectrum) in run.spectra.iter().take(5).enumerate() {
         println!("\nSpectrum #{}", i + 1);
         println!("  ID: {}", spectrum.id);
         println!("  Index: {}", spectrum.index);

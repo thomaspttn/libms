@@ -10,16 +10,13 @@ use utils::{decode_binary_data, get_attr, get_attr_optional};
 /// Parses an mzML string into a Run object
 pub fn parse_mzml(xml_data: &str) -> Result<Run> {
     let mut reader = Reader::from_str(xml_data);
-    reader.trim_text(true);
+    reader.config_mut().trim_text(true);
 
     let mut buf = Vec::new();
     let mut current_run = None;
     let mut spectra = Vec::new();
     let mut current_spectrum = None;
     let mut current_cv_params = Vec::new();
-    let mut current_scan_list = None;
-    let mut current_scan = None;
-    let mut current_scan_window = None;
     let mut current_binary_data_array = None;
 
     while let Ok(event) = reader.read_event_into(&mut buf) {
@@ -51,7 +48,7 @@ pub fn parse_mzml(xml_data: &str) -> Result<Run> {
                 }
                 b"binary" => {
                     if let Some(array) = current_binary_data_array.as_mut() {
-                        let encoded_data = reader.read_text(e.name(), &mut Vec::new())?;
+                        let encoded_data = reader.read_text(e.name())?;
                         let compression = array.cv_params.iter().find_map(|p| {
                             if p.name.contains("compression") {
                                 p.name.clone().into()

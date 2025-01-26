@@ -13,4 +13,5 @@ flate2 = "1.0.35"
 numpress = "1.1.0"
 
 [lib]
-crate-type = ["cdylib"]
+name = "libms"
+path = "src/lib.rs"
